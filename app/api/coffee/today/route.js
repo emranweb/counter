@@ -1,8 +1,8 @@
-import { connection } from "../../../utils/dbconnect.js";
+import { connection } from "@/app/database/dbconnect.js";
 
 export async function GET() {
     const [rows, fields] = await connection.query(
-        "SELECT count FROM coffee WHERE date = CURDATE()"
+        "SELECT SUM(count) FROM coffees WHERE DATE(datetime) = CURDATE();"
     );
     return Response.json(rows);
 }
