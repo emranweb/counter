@@ -1,5 +1,5 @@
 -- user table
-CREATE TABLE users (
+CREATE TABLE  IF NOT EXISTS users (
     user_id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE, -- Ensuring unique email addresses
@@ -10,7 +10,7 @@ CREATE TABLE users (
 
 
 -- expense table
-CREATE TABLE expenses (
+CREATE TABLE IF NOT EXISTS  expenses (
     expense_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -20,8 +20,21 @@ CREATE TABLE expenses (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+
+-- coffee table
+CREATE TABLE IF NOT EXISTS  coffees (
+    coffee_id INT NOT NULL AUTO_INCREMENT,
+    count INT NOT NULL DEFAULT 1,
+    user_id INT NOT NULL,
+    coffee_type ENUM('regular', 'medium', 'large') NOT NULL DEFAULT 'regular',
+    datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (coffee_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
 -- create another table for coffee request
-CREATE TABLE request_coffees (
+CREATE TABLE IF NOT EXISTS  request_coffees (
     request_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     request_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -33,17 +46,9 @@ CREATE TABLE request_coffees (
     FOREIGN KEY (coffee_id) REFERENCES coffees(coffee_id)
 );
 
+ALTER TABLE coffees 
+ADD COLUMN request_id INT NULL;
 
--- coffee table
-CREATE TABLE coffees (
-    coffee_id INT NOT NULL AUTO_INCREMENT,
-    count INT NOT NULL DEFAULT 1,
-    user_id INT NOT NULL,
-    coffee_type ENUM('regular', 'medium', 'large') NOT NULL DEFAULT 'regular',
-    request_id INT NULL DEFAULT NULL,
-    datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (coffee_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (request_id) REFERENCES request_coffees(request_id)
-);
+ALTER TABLE coffees
+ADD FOREIGN KEY (request_id) REFERENCES request_coffees(request_id);
 
