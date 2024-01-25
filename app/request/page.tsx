@@ -1,7 +1,10 @@
+"use client";
 import React from "react";
 
 const CoffeeRequestDashboard = () => {
     // Dummy data - replace this with real data from your backend
+    const [isRequested, setIsRequested] = React.useState(false);
+
     const coffeeRequests = [
         {
             id: 1,
@@ -20,6 +23,22 @@ const CoffeeRequestDashboard = () => {
         // ... more requests
     ];
 
+    async function requestCoffee() {
+        setIsRequested(true);
+        const response = await fetch("/api/coffee/request", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: 1,
+                delivery_time: "2024-1-25 12:00:00",
+            }),
+        });
+        const data = await response.json();
+        console.log(data);
+    }
+
     return (
         <div className="container mx-auto my-8">
             <div className="flex justify-between">
@@ -27,6 +46,8 @@ const CoffeeRequestDashboard = () => {
                     Coffee Requests Dashboard
                 </h1>
             </div>
+
+            <button onClick={requestCoffee}>Request Coffee</button>
 
             <div className="mt-6">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

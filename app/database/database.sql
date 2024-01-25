@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS  request_coffees (
     user_id INT NOT NULL,
     request_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     delivery_time DATETIME NOT NULL,
-    coffee_id INT NOT NULL,
+    coffee_id INT NULL,
     status ENUM('pending', 'completed') NOT NULL DEFAULT 'pending',
     PRIMARY KEY (request_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),

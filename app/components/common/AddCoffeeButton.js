@@ -15,9 +15,10 @@ const AddCoffeeButton = () => {
     };
 
     return (
+        // create a tailwindcss large button with a coffee icon
         <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-8 px-8 rounded-full"
             onClick={handleAddCoffee}
-            className="px-6 py-2.5 mb-4 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 focus:outline-none focus:ring-0 transition duration-150 ease-in-out dark:hover:bg-blue-500"
         >
             Add Coffee
         </button>
