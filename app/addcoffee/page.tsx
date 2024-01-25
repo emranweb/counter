@@ -4,7 +4,7 @@ import AddCoffeeWithCount from "../components/common/AddCoffeeCount";
 
 const CoffeePage = () => {
     return (
-        <div>
+        <div className="flex justify-center flex-col items-center">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
                 Coffee Maker Dashboard
             </h1>
