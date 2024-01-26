@@ -9,6 +9,9 @@ const AddCoffeeButton = () => {
             headers: {
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify({
+                count: 1,
+            }),
         })
             .then((res) => res.json())
             .then((data) => console.log(data));

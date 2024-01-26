@@ -21,7 +21,9 @@ const AddCoffeeWithCount = () => {
         <div className="items-center">
             <input
                 type="text"
-                placeholder=""
+                placeholder="input coffee count"
+                value={count}
+                onChange={(e) => setCount(e.target.value)}
                 className="input input-bordered w-full max-w-xs"
             />
             <button onClick={handleAddCoffee} className="btn btn-lg my-4">

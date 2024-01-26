@@ -1,6 +1,15 @@
 import Image from "next/image";
+import { basename } from "path";
 
-export default function Home() {
+async function getTodayCount() {
+    const res = await fetch(`${process.env.BASE_URL}/api/coffee/today`);
+    return res.json();
+}
+
+export default async function Home() {
+    const todayCount = await getTodayCount();
+    const today = todayCount ? todayCount[0].today : 0;
+
     const transactions = [
         { id: 1, type: "Today", count: 123, date: "2024-01-18" },
         { id: 2, type: "Weekly", count: 456, date: "2024-01-11" },
@@ -18,7 +27,7 @@ export default function Home() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">123</span>
+                            <span className="text-3xl font-bold">{today}</span>
                         </div>
                     </div>
 

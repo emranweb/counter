@@ -7,10 +7,10 @@ export async function GET() {
 export async function POST(request: Request) {
     const { count } = await request.json();
 
-    console.log(request.body);
-    const [rows] = await connection.query(
-        `INSERT INTO coffees(user_id, count) VALUES(${count})`
+    const [results] = await connection.query(
+        `INSERT INTO coffees (user_id, count) VALUES(?, ?)`,
+        [1, count ?? 1]
     );
 
-    return Response.json({ message: "Coffee created!" });
+    return Response.json({ message: "Coffee created!", results });
 }
