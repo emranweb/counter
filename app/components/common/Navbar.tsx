@@ -31,21 +31,30 @@ const Navbar = () => {
                         <li>
                             <Link href="/addcoffee" />
                         </li>
+                        <li>
+                            <Link href="/addcoffee" />
+                        </li>
+                        <li>
+                            <Link href="/addcoffee" />
+                        </li>
+                        <li>
+                            <Link href="/addcoffee" />
+                        </li>
+                        <li>
+                            <Link href="/addcoffee" />
+                        </li>
                     </ul>
                 </div>
                 <Link href="/" className="btn btn-ghost text-xl">
                     COFFEE
                 </Link>
             </div>
-            <div className="navbar-center hidden lg:flex">
+            <div className="navbar-center  lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li>
                         <Link href="/addcoffee">Add Coffee</Link>
                     </li>
                 </ul>
-            </div>
-            <div className="navbar-end">
-                <a className="btn">Button</a>
             </div>
         </div>
     );

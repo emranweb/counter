@@ -18,7 +18,7 @@ const AddCoffeeWithCount = () => {
     };
 
     return (
-        <div className="items-center">
+        <div className="items-center flex flex-col justify-center">
             <input
                 type="text"
                 placeholder="input coffee count"
@@ -27,7 +27,7 @@ const AddCoffeeWithCount = () => {
                 className="input input-bordered w-full max-w-xs"
             />
             <button onClick={handleAddCoffee} className="btn btn-lg my-4">
-                Button
+                Add Multiple Coffees
             </button>
         </div>
     );

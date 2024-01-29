@@ -1,7 +1,11 @@
 import { connection } from "@/app/database/dbconnect";
 
 export async function GET() {
-    return Response.json({ message: "Hello World!" });
+    const [results] = await connection.query(
+        `SELECT * FROM coffees ORDER BY coffee_id DESC`
+    );
+
+    return Response.json(results);
 }
 
 export async function POST(request: Request) {
