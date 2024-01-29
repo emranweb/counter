@@ -1,6 +1,3 @@
-import Image from "next/image";
-import { basename } from "path";
-
 async function getTodayCount() {
     const res = await fetch(`${process.env.BASE_URL}/api/coffee/today`, {
         cache: "no-cache",
