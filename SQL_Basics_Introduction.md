@@ -35,10 +35,10 @@ update, and delete.
 
 ## Data Definition
 
-CREATE: Create a new table, e.g., CREATE TABLE Students.
-ALTER: Modify an existing table, e.g., add a new column to the Students table.
-DROP: Delete a table, e.g., DROP TABLE Students.
-TRUNCATE: Empty all records in a table, e.g., TRUNCATE TABLE Students.
+-   CREATE: Create a new table, e.g., CREATE TABLE Students.
+-   ALTER: Modify an existing table, e.g., add a new column to the Students table.
+-   DROP: Delete a table, e.g., DROP TABLE Students.
+-   TRUNCATE: Empty all records in a table, e.g., TRUNCATE TABLE Students.
 
 ```sql
 -- Create a new table
@@ -60,10 +60,10 @@ TRUNCATE TABLE Students;
 
 ## Data Manipulation
 
-SELECT: Retrieve student names from the Students table.
-INSERT: Add a new student record into the Students table.
-UPDATE: Update a student's email address in the Students table.
-DELETE: Remove a student's record from the Students table.
+-   SELECT: Retrieve student names from the Students table.
+-   INSERT: Add a new student record into the Students table.
+-   UPDATE: Update a student's email address in the Students table.
+-   DELETE: Remove a student's record from the Students table.
 
 ```sql
 
@@ -84,9 +84,9 @@ DELETE FROM Students WHERE student_id = 1;
 
 ## Data Query
 
-Filtering: Use WHERE to find students in a specific program.
-Sorting: Display students sorted by last name using ORDER BY.
-Aggregation: Calculate the average grade of students using AVG.
+-   Filtering: Use WHERE to find students in a specific program.
+-   Sorting: Display students sorted by last name using ORDER BY.
+-   Aggregation: Calculate the average grade of students using AVG.
 
 ```sql
 
