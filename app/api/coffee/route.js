@@ -8,7 +8,7 @@ export async function GET() {
     return Response.json(results);
 }
 
-export async function POST(request: Request) {
+export async function POST(request) {
     const { count } = await request.json();
 
     const [results] = await connection.query(

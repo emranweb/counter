@@ -1,10 +1,10 @@
 import { connection } from "@/app/database/dbconnect";
 
-export async function GET(request: Request, response: Response) {
+export async function GET(request, response) {
     const [results] = await connection.query("SELECT * FROM request_coffee");
 }
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request, response) {
     const { user_id, delivery_time } = await request.json();
 
     const [results] = await connection.query(

@@ -1,3 +1,4 @@
+export const runtime = "edge";
 async function getTodayCount() {
     const res = await fetch(`${process.env.BASE_URL}/api/coffee/today`, {
         cache: "no-cache",
@@ -20,11 +21,11 @@ const getMonthlyCount = async () => {
 };
 
 export default async function Home() {
-    const todayCount = await getTodayCount();
-    const today = todayCount ? todayCount[0].today : 0;
-    const coffeeHistory = await getCoffeeHistory();
-    const monthlyCount = await getMonthlyCount();
-    const monthly = monthlyCount ? monthlyCount[0].month : 0;
+    const todayCount: any = await getTodayCount();
+    const today: any = todayCount ? todayCount[0].today : 0;
+    const coffeeHistory: any = await getCoffeeHistory();
+    const monthlyCount: any = await getMonthlyCount();
+    const monthly: any = monthlyCount ? monthlyCount[0].month : 0;
 
     return (
         <div>
