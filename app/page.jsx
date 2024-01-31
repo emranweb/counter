@@ -1,31 +1,36 @@
-export const runtime = "edge";
 async function getTodayCount() {
-    const res = await fetch(`${process.env.BASE_URL}/api/coffee/today`, {
-        cache: "no-cache",
-    });
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/coffee/today`,
+        {
+            cache: "no-cache",
+        }
+    );
     return res.json();
 }
 
 const getCoffeeHistory = async () => {
-    const res = await fetch(`${process.env.BASE_URL}/api/coffee`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/coffee`, {
         cache: "no-cache",
     });
     return res.json();
 };
 
 const getMonthlyCount = async () => {
-    const res = await fetch(`${process.env.BASE_URL}/api/coffee/month`, {
-        cache: "no-cache",
-    });
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/coffee/month`,
+        {
+            cache: "no-cache",
+        }
+    );
     return res.json();
 };
 
 export default async function Home() {
-    const todayCount: any = await getTodayCount();
-    const today: any = todayCount ? todayCount[0].today : 0;
-    const coffeeHistory: any = await getCoffeeHistory();
-    const monthlyCount: any = await getMonthlyCount();
-    const monthly: any = monthlyCount ? monthlyCount[0].month : 0;
+    const todayCount = await getTodayCount();
+    const today = todayCount ? todayCount[0].today : 0;
+    const coffeeHistory = await getCoffeeHistory();
+    const monthlyCount = await getMonthlyCount();
+    const monthly = monthlyCount ? monthlyCount[0].month : 0;
 
     return (
         <div>
@@ -103,37 +108,33 @@ export default async function Home() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {coffeeHistory.map(
-                                            (transaction: any) => (
-                                                <tr
-                                                    className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                                                    key={transaction.coffee_id}
-                                                >
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        {transaction.coffee_id}
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {
-                                                            transaction.coffee_type
-                                                        }
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {transaction.count}
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {new Date(
-                                                            transaction.datetime
-                                                        ).toLocaleDateString(
-                                                            "bd-BD"
-                                                        )}
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {transaction.request_id ??
-                                                            "No"}
-                                                    </td>
-                                                </tr>
-                                            )
-                                        )}
+                                        {coffeeHistory.map((transaction) => (
+                                            <tr
+                                                className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                                                key={transaction.coffee_id}
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                    {transaction.coffee_id}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {transaction.coffee_type}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {transaction.count}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {new Date(
+                                                        transaction.datetime
+                                                    ).toLocaleDateString(
+                                                        "bd-BD"
+                                                    )}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {transaction.request_id ??
+                                                        "No"}
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>

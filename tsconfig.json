@@ -29,7 +29,8 @@
         ".next/types/**/*.ts",
         "app/api/coffee/year/route.js",
         "app/api/coffee/request/route.js",
-        "app/api/coffee/month/route.js"
+        "app/api/coffee/month/route.js",
+        "app/page.jsx"
     ],
     "exclude": ["node_modules"]
 }
