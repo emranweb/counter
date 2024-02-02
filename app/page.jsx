@@ -1,37 +1,7 @@
-async function getTodayCount() {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/coffee/today`,
-        {
-            cache: "no-cache",
-        }
-    );
-    return res.json();
-}
-
-const getCoffeeHistory = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/coffee`, {
-        cache: "no-cache",
-    });
-    return res.json();
-};
-
-const getMonthlyCount = async () => {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/coffee/month`,
-        {
-            cache: "no-cache",
-        }
-    );
-    return res.json();
-};
+import { getTodayValue } from "./services/getToday";
 
 export default async function Home() {
-    const todayCount = await getTodayCount();
-    const today = todayCount ? todayCount[0].today : 0;
-    const coffeeHistory = await getCoffeeHistory();
-    const monthlyCount = await getMonthlyCount();
-    const monthly = monthlyCount ? monthlyCount[0].month : 0;
-
+    const [{ today }] = await getTodayValue();
     return (
         <div>
             <div className="container mx-auto my-10">
@@ -41,7 +11,9 @@ export default async function Home() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">{today}</span>
+                            <span className="text-3xl font-bold">
+                                {today ?? 0}
+                            </span>
                         </div>
                     </div>
 
@@ -50,9 +22,7 @@ export default async function Home() {
                             Monthly Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">
-                                {monthly}
-                            </span>
+                            <span className="text-3xl font-bold">100</span>
                         </div>
                     </div>
 
@@ -107,7 +77,7 @@ export default async function Home() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    {/* <tbody>
                                         {coffeeHistory.map((transaction) => (
                                             <tr
                                                 className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
@@ -135,7 +105,7 @@ export default async function Home() {
                                                 </td>
                                             </tr>
                                         ))}
-                                    </tbody>
+                                    </tbody> */}
                                 </table>
                             </div>
                         </div>
