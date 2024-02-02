@@ -1,32 +1,7 @@
-export const runtime = "edge";
-async function getTodayCount() {
-    const res = await fetch(`${process.env.BASE_URL}/api/coffee/today`, {
-        cache: "no-cache",
-    });
-    return res.json();
-}
-
-const getCoffeeHistory = async () => {
-    const res = await fetch(`${process.env.BASE_URL}/api/coffee`, {
-        cache: "no-cache",
-    });
-    return res.json();
-};
-
-const getMonthlyCount = async () => {
-    const res = await fetch(`${process.env.BASE_URL}/api/coffee/month`, {
-        cache: "no-cache",
-    });
-    return res.json();
-};
+import { getTodayValue } from "./services/getToday";
 
 export default async function Home() {
-    const todayCount: any = await getTodayCount();
-    const today: any = todayCount ? todayCount[0].today : 0;
-    const coffeeHistory: any = await getCoffeeHistory();
-    const monthlyCount: any = await getMonthlyCount();
-    const monthly: any = monthlyCount ? monthlyCount[0].month : 0;
-
+    const [{ today }] = await getTodayValue();
     return (
         <div>
             <div className="container mx-auto my-10">
@@ -36,7 +11,9 @@ export default async function Home() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">{today}</span>
+                            <span className="text-3xl font-bold">
+                                {today ?? 0}
+                            </span>
                         </div>
                     </div>
 
@@ -45,9 +22,7 @@ export default async function Home() {
                             Monthly Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">
-                                {monthly}
-                            </span>
+                            <span className="text-3xl font-bold">100</span>
                         </div>
                     </div>
 
@@ -102,39 +77,35 @@ export default async function Home() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {coffeeHistory.map(
-                                            (transaction: any) => (
-                                                <tr
-                                                    className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                                                    key={transaction.coffee_id}
-                                                >
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        {transaction.coffee_id}
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {
-                                                            transaction.coffee_type
-                                                        }
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {transaction.count}
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {new Date(
-                                                            transaction.datetime
-                                                        ).toLocaleDateString(
-                                                            "bd-BD"
-                                                        )}
-                                                    </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        {transaction.request_id ??
-                                                            "No"}
-                                                    </td>
-                                                </tr>
-                                            )
-                                        )}
-                                    </tbody>
+                                    {/* <tbody>
+                                        {coffeeHistory.map((transaction) => (
+                                            <tr
+                                                className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                                                key={transaction.coffee_id}
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                    {transaction.coffee_id}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {transaction.coffee_type}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {transaction.count}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {new Date(
+                                                        transaction.datetime
+                                                    ).toLocaleDateString(
+                                                        "bd-BD"
+                                                    )}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    {transaction.request_id ??
+                                                        "No"}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody> */}
                                 </table>
                             </div>
                         </div>
