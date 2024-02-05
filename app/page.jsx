@@ -1,7 +1,26 @@
-import { getTodayValue } from "./services/getToday";
+"use client";
 
-export default async function Home() {
-    const [{ today }] = await getTodayValue();
+import { useEffect, useState } from "react";
+
+const getTodayData = async () => {
+    const response = await fetch("api/coffee/today", { cache: "no-store" });
+    const data = await response.json();
+    return data;
+};
+
+export default function Home() {
+    const [today, setToday] = useState(0);
+
+    useEffect(() => {
+        getTodayData()
+            .then((data) => {
+                setToday(data[0].today ?? 0);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    });
+
     return (
         <div>
             <div className="container mx-auto my-10">
@@ -11,9 +30,7 @@ export default async function Home() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">
-                                {today ?? 0}
-                            </span>
+                            <span className="text-3xl font-bold">{today}</span>
                         </div>
                     </div>
 
