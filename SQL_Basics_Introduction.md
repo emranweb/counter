@@ -8,7 +8,18 @@ Data is a collection of a distinct small unit of information. It can be used in 
 
 Relational database model has two main terminologies called instance and schema. The instance is a table with rows or columns. Schema specifies the structure like name of the relation, type of each column and name.
 
-<img src="https://www.sqlshack.com/wp-content/uploads/2020/07/anatomy-of-a-sql-table-1.png">
+## Examples of Databases
+
+| student_id | student_name | course_name | score |
+| ---------- | ------------ | ----------- | ----- |
+| 1          | Alice        | Math        | 85    |
+| 1          | Alice        | Science     | 90    |
+| 2          | Bob          | Literature  | 75    |
+| 2          | Bob          | Music       | 70    |
+| 3          | Charlie      | History     | 80    |
+| 3          | Charlie      | Physics     | 85    |
+| 4          | David        | Art         | 95    |
+| 4          | David        | Chemistry   | 90    |
 
 ### Database management system
 
@@ -24,6 +35,8 @@ A database management system (DBMS) is software to create and manage databases, 
 
 NoSQL databases (aka "not only SQL") are non-tabular databases and store data differently than relational tables. NoSQL databases come in a variety of types based on their data model. The main types are document, key-value, wide-column, and graph. They provide flexible schemas and scale easily with large amounts of data and high user loads.
 
+<img src="https://media.geeksforgeeks.org/wp-content/uploads/20220405112418/NoSQLDatabases.jpg">
+
 ## Introduction to SQL
 
 Structured Query Language (SQL) is the standard language for relational database management. It is used to interact with databases to perform various tasks like data insertion, query,
@@ -33,98 +46,263 @@ update, and delete.
 
 <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/Categories_of_data_types-SQL_Data_Types.PNG">
 
-## Data Definition
+## Working with table structures
 
--   CREATE: Create a new table, e.g., CREATE TABLE Students.
--   ALTER: Modify an existing table, e.g., add a new column to the Students table.
--   DROP: Delete a table, e.g., DROP TABLE Students.
--   TRUNCATE: Empty all records in a table, e.g., TRUNCATE TABLE Students.
+### Create a New Table in the Database
 
 ```sql
--- Create a new table
 CREATE TABLE Students (
-  student_id INT PRIMARY KEY,
-  name VARCHAR(50),
-  email VARCHAR(50)
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    enrollment_date DATE
 );
 
--- Add a new column
-ALTER TABLE Students ADD COLUMN birthdate DATE;
+```
 
--- Delete a table
-DROP TABLE Students;
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 1          | Alice   | 2021-01-15      |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
 
--- Empty all records in a table
+### ALTER TABLE – Modify the Structure of an Existing Table
+
+```sql
+ALTER TABLE Students
+ADD COLUMN email VARCHAR(255);
+```
+
+### DROP TABLE – Remove the Tables Permanently
+
+```sql
+DROP TABLE Courses;
+```
+
+### TRUNCATE TABLE – Delete All Data in a Big Table Fast and Efficiently
+
+```sql
 TRUNCATE TABLE Students;
 ```
 
-## Data Manipulation
+# Modifying data
 
--   SELECT: Retrieve student names from the Students table.
--   INSERT: Add a new student record into the Students table.
--   UPDATE: Update a student's email address in the Students table.
--   DELETE: Remove a student's record from the Students table.
+## INSERT – Insert One or More Rows into a Table
 
 ```sql
+INSERT INTO
+   Students (student_id, name, enrollment_date)
+VALUES
+(5, 'Eve', '2022-01-01'),
+(6, 'Frank', '2022-02-01');
+```
 
--- Select all students
+### UPDATE – Update Existing Data in a Table
+
+```sql
+UPDATE Students
+SET enrollment_date = '2022-01-15'
+WHERE student_id = 3;
+```
+
+### DELETE – Delete Data from a Table Permanently
+
+```sql
+DELETE FROM Students
+WHERE student_id = 4;
+```
+
+## Querying Data - SELECT
+
+### Select All Columns from a Table
+
+```sql
 SELECT * FROM Students;
-
--- Insert a new student
-INSERT INTO Students (student_id, name, email) VALUES (1, 'John Doe', 'johndoe@example.com');
-
--- Update a student's email
-UPDATE Students SET email = 'newemail@example.com' WHERE student_id = 1;
-
--- Delete a student
-DELETE FROM Students WHERE student_id = 1;
-
-
 ```
 
-## Data Query
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 1          | Alice   | 2021-01-15      |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
 
--   Filtering: Use WHERE to find students in a specific program.
--   Sorting: Display students sorted by last name using ORDER BY.
--   Aggregation: Calculate the average grade of students using AVG.
+### Select Specific Columns from a Table
 
 ```sql
+SELECT course_name, score FROM Students;
+```
 
--- Select students with a specific name
-SELECT * FROM Students WHERE name = 'John Doe';
+| course_name | score |
+| ----------- | ----- |
+| Math        | 85    |
+| Science     | 90    |
+| Literature  | 75    |
+| History     | 80    |
+| Art         | 95    |
+| Music       | 70    |
+| Physics     | 85    |
+| Chemistry   | 90    |
 
--- Select all students sorted by name
+Genreate a new table using sort by caouse desc
+
+## SQL Sorting Data
+
+### Sort by One Column
+
+```sql
 SELECT * FROM Students ORDER BY name;
-
--- Calculate the average grade
-SELECT AVG(grade) FROM Enrollments;
-
 ```
 
-## Subqueries and Nested Queries
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 1          | Alice   | 2021-01-15      |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
 
-A subquery is a query that appears inside another query statement. Subqueries are also referred to as sub- SELECT s or nested SELECT s. The full SELECT syntax is valid in subqueries.
+### Sort by Multiple Columns
 
 ```sql
+SELECT * FROM Students ORDER BY enrollment_date DESC, name;
+```
 
--- Find students who are taking the most courses
-SELECT name FROM Students
-WHERE student_id IN (
-  SELECT student_id FROM Enrollments
-  GROUP BY student_id
-  ORDER BY COUNT(*) DESC
-  LIMIT 1
-);
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 4          | David   | 2021-08-30      |
+| 3          | Charlie | 2021-05-22      |
+| 2          | Bob     | 2021-03-12      |
+| 1          | Alice   | 2021-01-15      |
+
+### Sort by a Numeric Column
+
+```sql
+SELECT * FROM Students ORDER BY student_id;
+```
+
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 1          | Alice   | 2021-01-15      |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
+
+## SQL Filtering Data
+
+### DISTINCT to Select Unique Names
+
+```sql
+SELECT DISTINCT name FROM Students;
 
 ```
 
-# Indexes and Performance Tuning
+| name    |
+| ------- |
+| Alice   |
+| Bob     |
+| Charlie |
+| David   |
 
-## Sanjana Khan
+### LIMIT to Select the First Two Rows
 
-## Source
+```sql
+SELECT * FROM Students LIMIT 2;
+```
+
+| student_id | name  | enrollment_date |
+| ---------- | ----- | --------------- |
+| 1          | Alice | 2021-01-15      |
+| 2          | Bob   | 2021-03-12      |
+
+### WHERE Clause Comparison Operators
+
+The SQL comparison operators allow you to test if two expressions are the same. The result of a comparison operator has one of three value true, false, and unknown.
+
+#### SQL Query: WHERE Clause Equal (=)
+
+The equal to operator compares the equality of two expressions:
+
+```sql
+SELECT * FROM Students WHERE name = 'Alice';
+```
+
+| student_id | name  | enrollment_date |
+| ---------- | ----- | --------------- |
+| 1          | Alice | 2021-01-15      |
+
+#### WHERE Clause Not Equal (<>)
+
+The not equal to (<>) operator compares two non-null expressions and returns true if the value of the left expression is not equal to the right one; otherwise, it returns false.
+
+```sql
+SELECT * FROM Students WHERE name <> 'Alice';
+```
+
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
+
+#### WHERE Clause Greater Than (>)
+
+The greater than operator (>) compares two non-null expressions and returns true if the left operand is greater than the right operand; otherwise, the result is false.
+
+```sql
+SELECT * FROM Students WHERE student_id > 2;
+```
+
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
+
+#### WHERE Clause Greater Than or Equal To (>=)
+
+The greater than or equal operator (>=) compares two non-null expressions. The result is true if the left expression evaluates to a value that is greater than the value of the right expression.
+
+```sql
+SELECT * FROM Students WHERE student_id >= 2;
+```
+
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
+| 4          | David   | 2021-08-30      |
+
+#### WHERE Clause Less Than (<)
+
+The less than operator compares two non-null expressions. The result is true if the left operand evaluates to a value that is lower than the value of the right operand; otherwise, the result is false.
+
+```sql
+  SELECT * FROM Students WHERE student_id < 3;
+```
+
+| student_id | name  | enrollment_date |
+| ---------- | ----- | --------------- |
+| 1          | Alice | 2021-01-15      |
+| 2          | Bob   | 2021-03-12      |
+
+#### WHERE Clause Less Than or Equal To (<=)
+
+The less than or equal to operator compares two non-null expressions and returns true if the left expression has a value less than or equal the value of the right expression; otherwise, it returns true.
+
+```sql
+SELECT * FROM Students WHERE student_id <= 3;
+```
+
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 1          | Alice   | 2021-01-15      |
+| 2          | Bob     | 2021-03-12      |
+| 3          | Charlie | 2021-05-22      |
 
 https://www.javatpoint.com/what-is-database
 https://www.w3schools.com/sql/
 https://www.tutorialspoint.com/sql/index.htm
 https://www.sqltutorial.org/
+
+```
+
+```
