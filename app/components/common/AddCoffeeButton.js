@@ -1,10 +1,12 @@
 "use client";
 
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { use } from "react";
 
 const AddCoffeeButton = () => {
-    const handleAddCoffee = () => {
-        fetch("/api/coffee", {
+    const router = useRouter();
+    const handleAddCoffee = async () => {
+        await fetch("/api/coffee", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -12,9 +14,8 @@ const AddCoffeeButton = () => {
             body: JSON.stringify({
                 count: 1,
             }),
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
+        });
+        router.refresh();
     };
 
     return (

@@ -1,7 +1,17 @@
-import { getTodayValue } from "./services/getToday";
+import React from "react";
+import { connection } from "./database/dbconnect";
+import { revalidatePath } from "next/cache";
 
-export default async function Home() {
-    const [{ today }] = await getTodayValue();
+async function getData() {
+    const [results] = await connection.query(
+        "SELECT SUM(count) AS today FROM coffees WHERE DATE(datetime) = CURDATE();"
+    );
+    return results;
+}
+
+export default async function Page() {
+    const [{ today }] = await getData();
+
     return (
         <div>
             <div className="container mx-auto my-10">
