@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import React from "react";
 import { connection } from "./database/dbconnect";
 import { revalidatePath } from "next/cache";
