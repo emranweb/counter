@@ -1,25 +1,16 @@
-"use client";
+import React from "react";
+import { connection } from "./database/dbconnect";
+import { revalidatePath } from "next/cache";
 
-import { useEffect, useState } from "react";
+async function getData() {
+    const [results] = await connection.query(
+        "SELECT SUM(count) AS today FROM coffees WHERE DATE(datetime) = CURDATE();"
+    );
+    return results;
+}
 
-const getTodayData = async () => {
-    const response = await fetch("api/coffee/today", { cache: "no-store" });
-    const data = await response.json();
-    return data;
-};
-
-export default function Home() {
-    const [today, setToday] = useState(0);
-
-    useEffect(() => {
-        getTodayData()
-            .then((data) => {
-                setToday(data[0].today ?? 0);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    });
+export default async function Page() {
+    const [{ today }] = await getData();
 
     return (
         <div>
@@ -30,7 +21,9 @@ export default function Home() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">{today}</span>
+                            <span className="text-3xl font-bold">
+                                {today ?? 0}
+                            </span>
                         </div>
                     </div>
 
