@@ -2,9 +2,15 @@
 
 ## Understanding Databases
 
+### What is DATABASE?
+
 Data is a collection of a distinct small unit of information. It can be used in a variety of forms like text, numbers, media, bytes, etc. A database is an organized collection of data, so that it can be easily accessed and managed.
 
+### History
+
 1968 was the year when File-Based database were introduced. 1970 relational model was proposed by Edgar Frank.
+
+#### Relational Database
 
 Relational database model has two main terminologies called instance and schema. The instance is a table with rows or columns. Schema specifies the structure like name of the relation, type of each column and name.
 
@@ -46,6 +52,12 @@ update, and delete.
 
 <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/Categories_of_data_types-SQL_Data_Types.PNG">
 
+-   char: fixed-length character data with a maximum length of 8000 characters.
+-   varchar - variable-length character data with a maximum length of 8000 characters.
+-   nchar: fixed-length unicode data with a maximum length of 4000 characters.
+-   Char = 8 bit length
+-   NChar = 16 bit length
+
 ## Working with table structures
 
 ### Create a New Table in the Database
@@ -76,7 +88,7 @@ ADD COLUMN email VARCHAR(255);
 ### DROP TABLE – Remove the Tables Permanently
 
 ```sql
-DROP TABLE Courses;
+DROP TABLE Students;
 ```
 
 ### TRUNCATE TABLE – Delete All Data in a Big Table Fast and Efficiently
@@ -130,21 +142,15 @@ SELECT * FROM Students;
 ### Select Specific Columns from a Table
 
 ```sql
-SELECT course_name, score FROM Students;
+SELECT name, enrollment_date FROM Students;
 ```
 
-| course_name | score |
-| ----------- | ----- |
-| Math        | 85    |
-| Science     | 90    |
-| Literature  | 75    |
-| History     | 80    |
-| Art         | 95    |
-| Music       | 70    |
-| Physics     | 85    |
-| Chemistry   | 90    |
-
-Genreate a new table using sort by caouse desc
+| name    | enrollment_date |
+| ------- | --------------- |
+| Alice   | 2021-01-15      |
+| Bob     | 2021-03-12      |
+| Charlie | 2021-05-22      |
+| David   | 2021-08-30      |
 
 ## SQL Sorting Data
 
@@ -298,11 +304,192 @@ SELECT * FROM Students WHERE student_id <= 3;
 | 2          | Bob     | 2021-03-12      |
 | 3          | Charlie | 2021-05-22      |
 
+### WHERE Clause Logical Operators
+
+#### ALL – Return True if All Comparisons are True
+
+```sql
+SELECT * FROM Students WHERE score >= ALL (SELECT score FROM TestScores WHERE test_id = 2);
+
+```
+
+This query selects all students whose scores in all tests are greater than or equal to the scores of test_id 2.
+
+| student_id | name    | score |
+| ---------- | ------- | ----- |
+| 2          | Bob     | 88    |
+| 3          | Charlie | 92    |
+
+### AND – Return True if Both Expressions are True
+
+```sql
+SELECT * FROM Students WHERE enrollment_date > '2021-01-01' AND enrollment_date < '2022-01-01';
+```
+
+This query selects all students who enrolled after '2021-01-01' and before '2022-01-01'.
+
+| student_id | name    | enrollment_date |
+| ---------- | ------- | --------------- |
+| 2          | Bob     | 2021-05-20      |
+| 3          | Charlie | 2021-06-15      |
+
+#### ANY – Return True if Any One of the Comparisons is True
+
+```sql
+SELECT * FROM Students WHERE score > ANY (SELECT score FROM TestScores WHERE test_id = 3);
+```
+
+This query selects all students who have a score greater than any score from test_id 3.
+
+| student_id | name  | score |
+| ---------- | ----- | ----- |
+| 1          | Alice | 75    |
+| 4          | David | 82    |
+
+#### BETWEEN – Return True if the Operand is Within a Range
+
+```sql
+SELECT * FROM Students WHERE student_id BETWEEN 1 AND 3;
+```
+
+This query selects all students whose student_id is between 1 and 3 (inclusive).
+
+| student_id | name    |
+| ---------- | ------- |
+| 1          | Alice   |
+| 2          | Bob     |
+| 3          | Charlie |
+
+#### EXISTS – Return True if a Subquery Contains Any Rows
+
+```sql
+SELECT * FROM Students WHERE EXISTS (SELECT * FROM TestScores WHERE Students.student_id = TestScores.student_id);
+```
+
+This query selects all students who have at least one entry in the TestScores table.
+
+| student_id | name    |
+| ---------- | ------- |
+| 1          | Alice   |
+| 3          | Charlie |
+
+#### IN – Return True if the Operand is Equal to One of the Value in a List
+
+```sql
+SELECT * FROM Students WHERE name IN ('Alice', 'Bob');
+```
+
+This query selects all students whose name is either 'Alice' or 'Bob'.
+
+| student_id | name  |
+| ---------- | ----- |
+| 1          | Alice |
+| 2          | Bob   |
+
+#### LIKE – Return True if the Operand Matches a Pattern
+
+```sql
+SELECT * FROM Students WHERE name LIKE 'Al%';
+```
+
+This query selects all students whose names start with 'Al'.
+
+| student_id | name  |
+| ---------- | ----- |
+| 1          | Alice |
+
+#### NOT – Reverse the Result of Any Other Boolean Operator
+
+```sql
+SELECT * FROM Students WHERE NOT (student_id > 2);
+```
+
+This query selects all students whose student_id is not greater than 2.
+
+| student_id | name  |
+| ---------- | ----- |
+| 1          | Alice |
+| 2          | Bob   |
+
+#### OR – Return True if Either Expression is True
+
+```sql
+SELECT * FROM Students WHERE student_id < 2 OR student_id > 3;
+```
+
+This query selects all students whose student_id is either less than 2 or greater than 3.
+
+| student_id | name  |
+| ---------- | ----- |
+| 1          | Alice |
+| 4          | David |
+
+#### SOME – Return True if Some of the Expressions are True
+
+```sql
+SELECT * FROM Students WHERE score > SOME (SELECT score FROM TestScores WHERE test_id = 4);
+```
+
+| student_id | name  | score |
+| ---------- | ----- | ----- |
+| 2          | Bob   | 83    |
+| 4          | David | 89    |
+
+This query selects all students who have a score greater than some scores from test_id 4.
+
+## SQL Aggregate Functions
+
+#### AVG() – Returns the Average of a Set
+
+```sql
+SELECT AVG(score) AS average_score FROM Students;
+```
+
+| average_score |
+| ------------- |
+| 82.5          |
+
+### COUNT() – Returns the Number of Items in a Set
+
+```sql
+SELECT COUNT(*) AS total_students FROM Students;
+```
+
+| total_students |
+| -------------- |
+| 4              |
+
+#### MAX() – Returns the Maximum Value in a Set
+
+```sql
+SELECT MAX(score) AS max_score FROM Students;
+```
+
+| max_score |
+| --------- |
+| 95        |
+
+#### MIN() – Returns the Minimum Value in a Set
+
+```sql
+SELECT MIN(score) AS min_score FROM Students;
+```
+
+| min_score |
+| --------- |
+| 70        |
+
+#### SUM() – Returns the Sum of All or Distinct Values in a Set
+
+```sql
+SELECT SUM(score) AS total_scores FROM Students;
+```
+
+| total_scores |
+| ------------ |
+| 330          |
+
 https://www.javatpoint.com/what-is-database
 https://www.w3schools.com/sql/
 https://www.tutorialspoint.com/sql/index.htm
 https://www.sqltutorial.org/
-
-```
-
-```
