@@ -543,9 +543,9 @@ ORDER BY enrollment_year;
 
 
 
+---
 
-
-### SQL SQL Subquery
+### SQL Subquery
 
 A subquery is a query that appears inside another query statement
 
