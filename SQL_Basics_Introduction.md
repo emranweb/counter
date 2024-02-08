@@ -51,6 +51,9 @@ NoSQL databases (aka "not only SQL") are non-tabular databases and store data di
 
 <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220405112418/NoSQLDatabases.jpg">
 
+
+---
+
 ## Introduction to SQL
 
 Structured Query Language (SQL) is the standard language for relational database management. It is used to interact with databases to perform various tasks like data insertion, query,
@@ -138,6 +141,9 @@ WHERE student_id = 3;
 DELETE FROM Students
 WHERE student_id = 4;
 ```
+
+---
+
 
 ## Querying Data - SELECT
 
@@ -462,6 +468,9 @@ SELECT * FROM Students WHERE score > SOME (SELECT score FROM TestScores WHERE te
 
 This query selects all students who have a score greater than some scores from test_id 4.
 
+
+---
+
 ## SQL Aggregate Functions
 
 #### AVG() – Returns the Average of a Set
@@ -518,6 +527,7 @@ SELECT SUM(score) AS total_scores FROM Students;
 
 ### Cloud Database
 https://supabase.com/
+
 https://planetscale.com/
 
 
