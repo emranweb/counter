@@ -523,6 +523,45 @@ SELECT SUM(score) AS total_scores FROM Students;
 | ------------ |
 | 330          |
 
+--- 
+
+### SQL Query with Alias for the Students Table:
+
+```sql
+SELECT YEAR(enrollment_date) AS enrollment_year, AVG(score) AS average_score
+FROM Students
+GROUP BY enrollment_year
+ORDER BY enrollment_year;
+
+```
+
+| enrollment_year | average_score |
+|-----------------|---------------|
+| 2020            | 82.5          |
+| 2021            | 87.3          |
+| 2022            | 90.0          |
+
+
+
+
+
+### SQL SQL Subquery
+
+A subquery is a query that appears inside another query statement
+
+
+```sql
+SELECT * FROM Students WHERE score >= ALL (SELECT score FROM TestScores WHERE test_id = 2);
+
+```
+
+This query selects all students whose scores in all tests are greater than or equal to the scores of test_id 2.
+
+| student_id | name    | score |
+| ---------- | ------- | ----- |
+| 2          | Bob     | 88    |
+| 3          | Charlie | 92    |
+
 
 
 ### Cloud Database
