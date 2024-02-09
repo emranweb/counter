@@ -12,7 +12,7 @@ Data is a collection of a distinct small unit of information. It can be used in 
 
 1968 was the year when File-Based database were introduced. 1970 relational model was proposed by Edgar Frank.
 
-#### Relational Database
+### Relational Database
 
 Relational database model has two main terminologies called instance and schema. The instance is a table with rows or columns. Schema specifies the structure like name of the relation, type of each column and name.
 
@@ -43,12 +43,25 @@ A database management system (DBMS) is software to create and manage databases, 
 
 NoSQL databases (aka "not only SQL") are non-tabular databases and store data differently than relational tables. NoSQL databases come in a variety of types based on their data model. The main types are document, key-value, wide-column, and graph. They provide flexible schemas and scale easily with large amounts of data and high user loads.
 
+- MongoDB.
+- Cassandra.
+- Elasticsearch.
+- Neo4J.
+- HBase.
+- CouchDB.
+- OrientDB.
+
 <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220405112418/NoSQLDatabases.jpg">
+
+
+---
 
 ## Introduction to SQL
 
 Structured Query Language (SQL) is the standard language for relational database management. It is used to interact with databases to perform various tasks like data insertion, query,
 update, and delete.
+
+---
 
 ## SQL Data Types
 
@@ -59,6 +72,8 @@ update, and delete.
 -   nchar: fixed-length unicode data with a maximum length of 4000 characters.
 -   Char = 8 bit length
 -   NChar = 16 bit length
+
+---
 
 ## Working with table structures
 
@@ -99,6 +114,9 @@ DROP TABLE Students;
 TRUNCATE TABLE Students;
 ```
 
+---
+
+
 # Modifying data
 
 ## INSERT – Insert One or More Rows into a Table
@@ -125,6 +143,9 @@ WHERE student_id = 3;
 DELETE FROM Students
 WHERE student_id = 4;
 ```
+
+---
+
 
 ## Querying Data - SELECT
 
@@ -154,9 +175,16 @@ SELECT name, enrollment_date FROM Students;
 | Charlie | 2021-05-22      |
 | David   | 2021-08-30      |
 
+
+---
+
+
 ## SQL Sorting Data
 
 ### Sort by One Column
+
+- ASC
+- DESC
 
 ```sql
 SELECT * FROM Students ORDER BY name;
@@ -194,6 +222,9 @@ SELECT * FROM Students ORDER BY student_id;
 | 2          | Bob     | 2021-03-12      |
 | 3          | Charlie | 2021-05-22      |
 | 4          | David   | 2021-08-30      |
+
+
+---
 
 ## SQL Filtering Data
 
@@ -439,6 +470,9 @@ SELECT * FROM Students WHERE score > SOME (SELECT score FROM TestScores WHERE te
 
 This query selects all students who have a score greater than some scores from test_id 4.
 
+
+---
+
 ## SQL Aggregate Functions
 
 #### AVG() – Returns the Average of a Set
@@ -490,6 +524,53 @@ SELECT SUM(score) AS total_scores FROM Students;
 | total_scores |
 | ------------ |
 | 330          |
+
+--- 
+
+### SQL Query with Alias for the Students Table:
+
+```sql
+SELECT YEAR(enrollment_date) AS enrollment_year, AVG(score) AS average_score
+FROM Students
+GROUP BY enrollment_year
+ORDER BY enrollment_year;
+
+```
+
+| enrollment_year | average_score |
+|-----------------|---------------|
+| 2020            | 82.5          |
+| 2021            | 87.3          |
+| 2022            | 90.0          |
+
+
+
+---
+
+### SQL Subquery
+
+A subquery is a query that appears inside another query statement
+
+
+```sql
+SELECT * FROM Students WHERE score >= ALL (SELECT score FROM TestScores WHERE test_id = 2);
+
+```
+
+This query selects all students whose scores in all tests are greater than or equal to the scores of test_id 2.
+
+| student_id | name    | score |
+| ---------- | ------- | ----- |
+| 2          | Bob     | 88    |
+| 3          | Charlie | 92    |
+
+
+
+### Cloud Database
+https://supabase.com/
+
+https://planetscale.com/
+
 
 https://www.javatpoint.com/what-is-database
 https://www.w3schools.com/sql/
