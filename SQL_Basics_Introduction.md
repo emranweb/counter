@@ -2,6 +2,8 @@
 
 ## Understanding Databases
 
+---
+
 ### What is DATABASE?
 
 Data is a collection of a distinct small unit of information. It can be used in a variety of forms like text, numbers, media, bytes, etc. A database is an organized collection of data, so that it can be easily accessed and managed.
