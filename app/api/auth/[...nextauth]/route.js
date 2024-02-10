@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 
 const handler = NextAuth({
-    providers: [],
+    providers: [CredentialsProvider],
 });
 
 export { handler as POST, handler as GET };
