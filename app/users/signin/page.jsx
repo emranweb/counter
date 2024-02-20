@@ -8,8 +8,11 @@ const Page = () => {
         password: "",
     });
 
-    const handleSubmit = () => {
-        signIn("Credentials", {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const response = await signIn("credentials", {
+            redirect: false,
             email: data.email,
             password: data.password,
         });
@@ -34,7 +37,7 @@ const Page = () => {
                     <input
                         required
                         type="password"
-                        placeholder=""
+                        placeholder="password"
                         className="input input-bordered w-full max-w-xs"
                         value={data.password}
                         onChange={(e) => setData({ password: e.target.value })}

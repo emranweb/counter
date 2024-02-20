@@ -12,8 +12,9 @@ const handler = NextAuth({
                 password: { type: "password" },
             },
             async authorize(credentials, req) {
-                const user = { id: 1, email: "abc@gmail.com", password: "123" };
+                const isExist = await fetch();
                 if (user) {
+                    console.log("user form auth", user);
                     return user;
                 } else {
                     return null;
@@ -21,6 +22,11 @@ const handler = NextAuth({
             },
         }),
     ],
+
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+    },
 });
 
 export { handler as POST, handler as GET };
