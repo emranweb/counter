@@ -9,7 +9,7 @@ const Page = () => {
     });
 
     const handleSubmit = () => {
-        signIn("credentials", {
+        signIn("Credentials", {
             email: data.email,
             password: data.password,
         });

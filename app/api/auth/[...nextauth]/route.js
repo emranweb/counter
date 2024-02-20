@@ -2,7 +2,7 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 const handler = NextAuth({
     pages: {
-        signIn: "/users/login",
+        signIn: "/users/signin",
     },
     providers: [
         CredentialsProvider({
