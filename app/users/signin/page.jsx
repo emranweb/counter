@@ -10,7 +10,6 @@ const Page = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         const response = await signIn("credentials", {
             redirect: false,
             email: data.email,
@@ -29,7 +28,9 @@ const Page = () => {
                         type="email"
                         required
                         value={data.email}
-                        onChange={(e) => setData({ email: e.target.value })}
+                        onChange={(e) =>
+                            setData({ ...data, email: e.target.value })
+                        }
                     />
                 </div>
                 <div>
@@ -40,7 +41,9 @@ const Page = () => {
                         placeholder="password"
                         className="input input-bordered w-full max-w-xs"
                         value={data.password}
-                        onChange={(e) => setData({ password: e.target.value })}
+                        onChange={(e) =>
+                            setData({ ...data, password: e.target.value })
+                        }
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">

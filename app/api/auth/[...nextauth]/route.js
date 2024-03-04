@@ -12,9 +12,28 @@ const handler = NextAuth({
                 password: { type: "password" },
             },
             async authorize(credentials, req) {
-                const isExist = await fetch();
+                const isExist = await fetch(
+                    "http://localhost:3000/api/users/verify",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email: credentials.email,
+                            password: credentials.password,
+                        }),
+                    }
+                );
+                console.log(isExist);
+
+                const user = {
+                    id: 1,
+                    name: "J Smith",
+                    email: "test@gmail.com",
+                    password: "123",
+                };
                 if (user) {
-                    console.log("user form auth", user);
                     return user;
                 } else {
                     return null;

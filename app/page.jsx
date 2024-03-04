@@ -1,17 +1,19 @@
-export const dynamic = "force-dynamic";
-import React from "react";
-import { connection } from "./database/dbconnect";
-import { revalidatePath } from "next/cache";
+"use client";
 
-async function getData() {
-    const [results] = await connection.query(
-        "SELECT SUM(count) AS today FROM coffees WHERE DATE(datetime) = CURDATE();"
-    );
-    return results;
-}
+import React, { useEffect, useState } from "react";
 
-export default async function Page() {
-    const [{ today }] = await getData();
+export default function Page() {
+    const [today, settoday] = useState(0);
+
+    useEffect(() => {
+        const getData = async () => {
+            const response = await fetch("/api/coffee/today");
+            const data = await response.json();
+            const [{ today }] = data ?? 0;
+            settoday(today);
+        };
+        getData();
+    }, []);
 
     return (
         <div>
@@ -22,9 +24,7 @@ export default async function Page() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">
-                                {today ?? 0}
-                            </span>
+                            <span className="text-3xl font-bold">{today}</span>
                         </div>
                     </div>
 
@@ -40,6 +40,14 @@ export default async function Page() {
                     <div className="bg-white p-4 rounded-lg shadow">
                         <h2 className="text-lg font-semibold text-gray-700">
                             Yearly Count
+                        </h2>
+                        <div className="mt-2">
+                            <span className="text-3xl font-bold">1011</span>
+                        </div>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow">
+                        <h2 className="text-lg font-semibold text-gray-700">
+                            Custom
                         </h2>
                         <div className="mt-2">
                             <span className="text-3xl font-bold">1011</span>
