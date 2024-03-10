@@ -1,19 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import useSWR from "swr";
 
 export default function Page() {
-    const [today, settoday] = useState(0);
+    const { data: todayData, error: todayError } = useSWR(
+        "/api/coffee/today",
+        (url) => fetch(url).then((res) => res.json())
+    );
+    const { data: coffeeHistory, error: coffeeHistoryError } = useSWR(
+        "/api/coffee",
+        (url) => fetch(url).then((res) => res.json())
+    );
 
-    useEffect(() => {
-        const getData = async () => {
-            const response = await fetch("/api/coffee/today");
-            const data = await response.json();
-            const [{ today }] = data ?? 0;
-            settoday(today);
-        };
-        getData();
-    }, []);
+    console.log("render");
+    console.log(todayData);
+    console.log(coffeeHistory);
 
     return (
         <div>
@@ -24,7 +26,7 @@ export default function Page() {
                             Todays Count
                         </h2>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold">{today}</span>
+                            <span className="text-3xl font-bold">{0}</span>
                         </div>
                     </div>
 
