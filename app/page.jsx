@@ -98,35 +98,6 @@ export default function Page() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    {/* <tbody>
-                                        {coffeeHistory.map((transaction) => (
-                                            <tr
-                                                className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                                                key={transaction.coffee_id}
-                                            >
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                    {transaction.coffee_id}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {transaction.coffee_type}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {transaction.count}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {new Date(
-                                                        transaction.datetime
-                                                    ).toLocaleDateString(
-                                                        "bd-BD"
-                                                    )}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {transaction.request_id ??
-                                                        "No"}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody> */}
                                 </table>
                             </div>
                         </div>
