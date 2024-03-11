@@ -1,17 +1,19 @@
+"use client";
 export const dynamic = "force-dynamic";
 import React from "react";
 import { connection } from "./database/dbconnect";
-import { revalidatePath } from "next/cache";
 
-async function getData() {
-    const [results] = await connection.query(
-        "SELECT SUM(count) AS today FROM coffees WHERE DATE(datetime) = CURDATE();"
-    );
-    return results;
-}
+// async function getData() {
+//     const [results] = await connection.query(
+//         "SELECT SUM(count) AS today FROM coffees WHERE DATE(datetime) = CURDATE();"
+//     );
+//     return results;
+// }
 
-export default async function Page() {
-    const [{ today }] = await getData();
+export default function Page() {
+    //const [{ today }] = await getData();
+    // const [startDate, setStartDate] = useState(new Date());
+    // const [endDate, setEndDate] = useState(new Date());
 
     return (
         <div>
@@ -23,7 +25,7 @@ export default async function Page() {
                         </h2>
                         <div className="mt-2">
                             <span className="text-3xl font-bold">
-                                {today ?? 0}
+                                {/* {today ?? 0} */}0
                             </span>
                         </div>
                     </div>
@@ -40,6 +42,15 @@ export default async function Page() {
                     <div className="bg-white p-4 rounded-lg shadow">
                         <h2 className="text-lg font-semibold text-gray-700">
                             Yearly Count
+                        </h2>
+                        <div className="mt-2">
+                            <span className="text-3xl font-bold">1011</span>
+                        </div>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow">
+                        <h2 className="text-lg font-semibold text-gray-700">
+                            Custom Date
+                            <input type="date" className="ml-2" />
                         </h2>
                         <div className="mt-2">
                             <span className="text-3xl font-bold">1011</span>
@@ -88,35 +99,6 @@ export default async function Page() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    {/* <tbody>
-                                        {coffeeHistory.map((transaction) => (
-                                            <tr
-                                                className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                                                key={transaction.coffee_id}
-                                            >
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                    {transaction.coffee_id}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {transaction.coffee_type}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {transaction.count}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {new Date(
-                                                        transaction.datetime
-                                                    ).toLocaleDateString(
-                                                        "bd-BD"
-                                                    )}
-                                                </td>
-                                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                    {transaction.request_id ??
-                                                        "No"}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody> */}
                                 </table>
                             </div>
                         </div>
