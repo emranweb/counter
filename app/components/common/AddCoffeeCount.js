@@ -5,7 +5,6 @@ const AddCoffeeWithCount = () => {
     const [count, setCount] = useState(1);
 
     const handleAddCoffee = () => {
-        console.log(`Adding ${count} coffees`);
         fetch("/api/coffee", {
             method: "POST",
             headers: {
