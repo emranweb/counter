@@ -2,51 +2,33 @@
 
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
+import CoffeeCountCard from "./components/ui/CoffeeCountCard";
+import { get } from "http";
 
 export default function Page() {
     const { data: todayData, error: todayError } = useSWR(
         "/api/coffee/today",
         (url) => fetch(url).then((res) => res.json())
     );
-    const { data: coffeeHistory, error: coffeeHistoryError } = useSWR(
+    const { data: coffeeData, error: coffeeHistoryError } = useSWR(
         "/api/coffee",
         (url) => fetch(url).then((res) => res.json())
     );
 
-    console.log("render");
-    console.log(todayData);
-    console.log(coffeeHistory);
+    const todayCount = todayData ? todayData[0].today : 0;
+    const coffeeHistory = coffeeData ? coffeeData : [];
 
     return (
         <div>
             <div className="container mx-auto my-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold text-gray-700">
-                            Todays Count
-                        </h2>
-                        <div className="mt-2">
-                            <span className="text-3xl font-bold">{0}</span>
-                        </div>
-                    </div>
+                    <CoffeeCountCard
+                        title="Todays Count"
+                        count={todayCount ?? 0}
+                    />
+                    <CoffeeCountCard title="Monthly Count" count={0} />
+                    <CoffeeCountCard title="Yearly Count" count={0} />
 
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold text-gray-700">
-                            Monthly Count
-                        </h2>
-                        <div className="mt-2">
-                            <span className="text-3xl font-bold">100</span>
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold text-gray-700">
-                            Yearly Count
-                        </h2>
-                        <div className="mt-2">
-                            <span className="text-3xl font-bold">1011</span>
-                        </div>
-                    </div>
                     <div className="bg-white p-4 rounded-lg shadow">
                         <h2 className="text-lg font-semibold text-gray-700">
                             Custom
@@ -97,6 +79,42 @@ export default function Page() {
                                                 Is Request
                                             </th>
                                         </tr>
+                                        {coffeeHistory.map((item, index) => (
+                                            <tr key={item.coffee_id}>
+                                                <th
+                                                    scope="col"
+                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    {item.coffee_id}
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    {item.coffee_type}
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    {item.count}
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    {new Date(
+                                                        item.datetime
+                                                    ).toLocaleTimeString()}
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    {item.request_id ?? "No"}
+                                                </th>
+                                            </tr>
+                                        ))}
                                     </thead>
                                 </table>
                             </div>

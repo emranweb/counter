@@ -2,7 +2,7 @@ import { connection } from "@/app/database/dbconnect";
 
 export async function GET() {
     const [results] = await connection.query(
-        `SELECT * FROM coffees ORDER BY coffee_id DESC`
+        `SELECT * FROM coffees ORDER BY coffee_id DESC LIMIT 10`
     );
 
     return Response.json(results);
