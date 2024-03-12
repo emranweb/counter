@@ -12,7 +12,27 @@ const handler = NextAuth({
                 password: { type: "password" },
             },
             async authorize(credentials, req) {
-                const user = { id: 1, email: "abc@gmail.com", password: "123" };
+                const isExist = await fetch(
+                    "http://localhost:3000/api/users/verify",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email: credentials.email,
+                            password: credentials.password,
+                        }),
+                    }
+                );
+                console.log(isExist);
+
+                const user = {
+                    id: 1,
+                    name: "J Smith",
+                    email: "test@gmail.com",
+                    password: "123",
+                };
                 if (user) {
                     return user;
                 } else {
@@ -21,6 +41,11 @@ const handler = NextAuth({
             },
         }),
     ],
+
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+    },
 });
 
 export { handler as POST, handler as GET };

@@ -3,17 +3,18 @@ import { connection } from "@/app/database/dbconnect";
 
 async function getAllCoffee() {
     const [results] = await connection.execute("SELECT * FROM coffees");
+    console.log(results);
     return results;
 }
 
 function CoffeeItem(props) {
     const { coffee_id, count, coffee_type, datetime } = props.coffee;
+
     return (
         <tr>
             <th>{coffee_id}</th>
             <td>{count}</td>
             <td>{coffee_type}</td>
-            <td>{datetime}</td>
         </tr>
     );
 }
@@ -37,9 +38,10 @@ export default async function Page() {
                         </tr>
                     </thead>
                     <tbody>
-                        {coffess.map((coffee, index) => (
-                            <CoffeeItem key={index} coffee={coffee} />
-                        ))}
+                        {coffess &&
+                            coffess.map((coffee, index) => (
+                                <CoffeeItem key={index} coffee={coffee} />
+                            ))}
                     </tbody>
                 </table>
             </div>
