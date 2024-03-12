@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import CoffeeCountCard from "./components/ui/CoffeeCountCard";
-import { get } from "http";
 
 export default function Page() {
     const { data: todayData, error: todayError } = useSWR(
