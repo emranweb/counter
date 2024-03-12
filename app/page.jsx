@@ -86,42 +86,45 @@ export default function Page() {
                                                 Is Request
                                             </th>
                                         </tr>
-                                        {coffeeHistory.map((item, index) => (
-                                            <tr key={item.coffee_id}>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.coffee_id}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.coffee_type}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.count}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {new Date(
-                                                        item.datetime
-                                                    ).toLocaleTimeString()}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.request_id ?? "No"}
-                                                </th>
-                                            </tr>
-                                        ))}
+                                        {coffeeHistory.map((item) => {
+                                            return (
+                                                <tr key={item.coffee_id}>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.coffee_id}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.coffee_type}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.count}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {new Date(
+                                                            item.datetime
+                                                        ).toLocaleTimeString()}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.request_id ??
+                                                            "No"}
+                                                    </th>
+                                                </tr>
+                                            );
+                                        })}
                                     </thead>
                                 </table>
                             </div>
