@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import CoffeeCountCard from "./components/ui/CoffeeCountCard";
+import { convertToClientDateTime } from "./utils/utils";
 
 export default function Page() {
     const { data: todayData, error: todayError } = useSWR(
@@ -111,9 +112,9 @@ export default function Page() {
                                                         scope="col"
                                                         className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                                                     >
-                                                        {new Date(
+                                                        {convertToClientDateTime(
                                                             item.datetime
-                                                        ).toLocaleTimeString()}
+                                                        )}
                                                     </th>
                                                     <th
                                                         scope="col"
