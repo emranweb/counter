@@ -8,11 +8,19 @@ import { get } from "http";
 export default function Page() {
     const { data: todayData, error: todayError } = useSWR(
         "/api/coffee/today",
-        (url) => fetch(url).then((res) => res.json())
+        (url) =>
+            fetch(url).then((res) => res.json(), {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false,
+            })
     );
     const { data: coffeeData, error: coffeeHistoryError } = useSWR(
         "/api/coffee",
-        (url) => fetch(url).then((res) => res.json())
+        (url) =>
+            fetch(url).then((res) => res.json(), {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false,
+            })
     );
 
     const todayCount = todayData ? todayData[0].today : 0;
