@@ -3,15 +3,24 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import CoffeeCountCard from "./components/ui/CoffeeCountCard";
+import { convertToClientDateTime } from "./utils/utils";
 
 export default function Page() {
     const { data: todayData, error: todayError } = useSWR(
         "/api/coffee/today",
-        (url) => fetch(url).then((res) => res.json())
+        (url) =>
+            fetch(url).then((res) => res.json(), {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false,
+            })
     );
     const { data: coffeeData, error: coffeeHistoryError } = useSWR(
         "/api/coffee",
-        (url) => fetch(url).then((res) => res.json())
+        (url) =>
+            fetch(url).then((res) => res.json(), {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false,
+            })
     );
 
     const todayCount = todayData ? todayData[0].today : 0;
@@ -78,42 +87,45 @@ export default function Page() {
                                                 Is Request
                                             </th>
                                         </tr>
-                                        {coffeeHistory.map((item, index) => (
-                                            <tr key={item.coffee_id}>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.coffee_id}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.coffee_type}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.count}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {new Date(
-                                                        item.datetime
-                                                    ).toLocaleTimeString()}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                >
-                                                    {item.request_id ?? "No"}
-                                                </th>
-                                            </tr>
-                                        ))}
+                                        {coffeeHistory.map((item) => {
+                                            return (
+                                                <tr key={item.coffee_id}>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.coffee_id}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.coffee_type}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.count}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {convertToClientDateTime(
+                                                            item.datetime
+                                                        )}
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                    >
+                                                        {item.request_id ??
+                                                            "No"}
+                                                    </th>
+                                                </tr>
+                                            );
+                                        })}
                                     </thead>
                                 </table>
                             </div>
