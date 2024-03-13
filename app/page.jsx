@@ -38,9 +38,7 @@ export default function Page() {
                     <CoffeeCountCard title="Yearly Count" count={0} />
 
                     <div className="bg-white p-4 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold text-gray-700">
-                            Custom
-                        </h2>
+                        <h2 className="text-lg font-semibold text-gray-700"></h2>
                         <div className="mt-2">
                             <span className="text-3xl font-bold">1011</span>
                         </div>
