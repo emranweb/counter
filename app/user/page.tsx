@@ -1,34 +1,24 @@
 "use client";
 import React, { createContext, useState } from "react";
+import useSWR from "swr";
+import { useSession, signIn, signOut } from "next-auth/react";
 
-const UserPage = () => {
-    const [isRequested, setIsRequested] = useState(false);
-
-    async function requestCoffee() {
-        setIsRequested(true);
-        const response = await fetch("/api/coffee/request", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                user_id: 1,
-                delivery_time: "2024-1-25 12:00:00",
-            }),
-        });
-        const data = await response.json();
-    }
-
+function Page() {
+    const { data: session } = useSession();
+    console.log(session);
+    const { data: userInfo, error } = useSWR("/api/user/info", (url) =>
+        fetch(url).then((res) => res.json())
+    );
     return (
-        <div>
-            <h1>Hello User</h1>
-            <h1>User Name: Emran</h1>
-            <form>
-                <input type="time" />
-                <button onClick={requestCoffee}>Request Coffee</button>
-            </form>
+        <div className="py-20">
+            <div className="container mx-auto">
+                <div className="flex">
+                    <div className=""></div>
+                    <div></div>
+                </div>
+            </div>
         </div>
     );
-};
+}
 
-export default UserPage;
+export default Page;
