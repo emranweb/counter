@@ -21,7 +21,7 @@ const Navbar = () => {
                 <div className="navbar-end  lg:flex">
                     <ul className="menu menu-horizontal px-1 gap-4">
                         <MenuItem href="/addcoffee" text="Coffes" />
-                        <MenuItem href="/users" text="Users" />
+                        <MenuItem href="/user" text="User" />
                     </ul>
                 </div>
             </div>
