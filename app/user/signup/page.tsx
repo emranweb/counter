@@ -23,9 +23,12 @@ const Page = () => {
             },
             body: JSON.stringify(userData),
         });
+        const data = await response.json();
+        console.log(data);
     };
     return (
         <div className="my-20">
+            <h3 className="text-2xl mb-4 max-w-md mx-auto">Login</h3>
             <div className="container mx-auto">
                 <form
                     className="flex gap-4 flex-col max-w-md mx-auto"

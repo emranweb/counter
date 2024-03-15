@@ -1,6 +1,12 @@
 import { connection } from "@/app/database/dbconnect";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+
+const comparePassword = (currentPassword, hashPassword) => {
+    return bcrypt.compareSync(currentPassword, hashPassword);
+};
+
 const handler = NextAuth({
     pages: {
         signIn: "/user/signin",
@@ -14,15 +20,25 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 const [results] = await connection.query(
-                    "SELECT * FROM users WHERE email=? AND password=?",
-                    [credentials.email, credentials.password]
+                    "SELECT * FROM users WHERE email=?",
+                    [credentials.email]
                 );
-                console.log(results);
 
                 if (results.length > 0) {
-                    return results;
+                    const user = results[0];
+
+                    const checkPassworkd = await comparePassword(
+                        credentials.password,
+                        user.password
+                    );
+                    console.log(checkPassworkd);
+                    if (checkPassworkd) {
+                        return { email: user.email, name: user.name };
+                    } else {
+                        throw new Error("password not match");
+                    }
                 } else {
-                    return null;
+                    throw new Error("No user found");
                 }
             },
         }),
