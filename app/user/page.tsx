@@ -1,9 +1,9 @@
-import { Session, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import React, { createContext, useState } from "react";
+import React from "react";
 import { connection } from "../database/dbconnect";
-import Image from "next/image";
 import { RowDataPacket } from "mysql2";
+import { userInfo } from "os";
 
 interface User extends RowDataPacket {
     user_id: number;
@@ -12,11 +12,20 @@ interface User extends RowDataPacket {
     password: string;
 }
 
-interface CoffeeHistory extends RowDataPacket {
+interface UserCoffee extends RowDataPacket {
     coffee_id: number;
+    count: number;
     user_id: number;
     coffee_type: string;
-    coffee_date: string;
+    datetime: string;
+}
+
+async function userInfoCoffee(id: number) {
+    const [results] = await connection.query<UserCoffee[]>(
+        "SELECT * FROM coffees WHERE user_id = ?",
+        [id]
+    );
+    return results;
 }
 
 const getData = async (email: string) => {
@@ -27,38 +36,30 @@ const getData = async (email: string) => {
     return results;
 };
 
-const getUserCoffeeHistory = async (id: number) => {
-    const [results] = await connection.query<CoffeeHistory[]>(
-        "SELECT * FROM coffee WHERE user_id = ?",
-        [id]
-    );
-    return results;
-};
-
 async function Page() {
     const session = await getServerSession();
+
     if (!session) {
         redirect("/user/signin");
         return null;
     }
-
     let userInfo = null;
-
     if (session && session.user?.email) {
         userInfo = await getData(session.user.email);
     }
+
+    let userCoffee = null;
+
+    if (Array.isArray(userInfo)) {
+        userCoffee = await userInfoCoffee(userInfo[0].user_id);
+    }
+    console.log(userCoffee);
 
     return (
         <div className="py-20">
             <div className="container mx-auto">
                 <div className="flex">
                     <div className="">
-                        <Image
-                            src="https://placehold.co/60x60"
-                            width="200"
-                            height="200"
-                            alt="user info"
-                        />
                         <p>AL Emran</p>
                         <p>Dhaka Bangladesh</p>
                     </div>
