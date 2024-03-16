@@ -7,9 +7,10 @@ const comparePassword = (currentPassword, hashPassword) => {
     return bcrypt.compareSync(currentPassword, hashPassword);
 };
 
-const handler = NextAuth({
+export const handler = NextAuth({
     pages: {
         signIn: "/user/signin",
+        signOut: "/user/signout",
     },
     providers: [
         CredentialsProvider({
@@ -31,7 +32,7 @@ const handler = NextAuth({
                         credentials.password,
                         user.password
                     );
-                    console.log(checkPassworkd);
+
                     if (checkPassworkd) {
                         return { email: user.email, name: user.name };
                     } else {

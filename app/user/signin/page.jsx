@@ -1,15 +1,17 @@
 "use client";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [userInfo, setUserInfo] = useState({
         email: "",
         password: "",
     });
     const [loginError, setLoginError] = useState("");
-    const router = useRouter();
+
     useEffect(() => {
         if (loginError) {
             setTimeout(() => {
@@ -18,6 +20,12 @@ const Page = () => {
         }
     }, [loginError]);
 
+    useEffect(() => {
+        if (session?.user) {
+            redirect("/user");
+        }
+    }, [session]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await signIn("credentials", {
@@ -25,12 +33,11 @@ const Page = () => {
             email: userInfo.email,
             password: userInfo.password,
         });
-        console.log(response);
         if (response.error) {
             setLoginError(response.error);
         } else {
             setLoginError("");
-            router.push("/");
+            router.push("/user");
         }
     };
     return (

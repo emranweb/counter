@@ -3,7 +3,7 @@ import { connection } from "@/app/database/dbconnect";
 
 async function getAllCoffee() {
     const [results] = await connection.execute("SELECT * FROM coffees");
-    console.log(results);
+
     return results;
 }
 

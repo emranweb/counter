@@ -53,7 +53,6 @@ async function Page() {
     if (Array.isArray(userInfo)) {
         userCoffee = await userInfoCoffee(userInfo[0].user_id);
     }
-    console.log(userCoffee);
 
     return (
         <div className="py-20">

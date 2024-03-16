@@ -24,7 +24,6 @@ const Page = () => {
             body: JSON.stringify(userData),
         });
         const data = await response.json();
-        console.log(data);
     };
     return (
         <div className="my-20">
