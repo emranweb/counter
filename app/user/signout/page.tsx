@@ -1,5 +1,4 @@
 "use client";
-
 import { signOut } from "next-auth/react";
 import React from "react";
 
@@ -9,7 +8,9 @@ const Page = () => {
             <div className="container max-auto">
                 <div className="max-w-sm mx-auto text-center">
                     <button
-                        onClick={() => signOut({ callbackUrl: "/user/signin" })}
+                        onClick={() =>
+                            signOut({ callbackUrl: "/", redirect: true })
+                        }
                         className="btn btn-primary"
                     >
                         SignOut

@@ -73,7 +73,6 @@ const Page = () => {
                         }
                     />
                     <button type="submit" className="btn btn-primary">
-                        {" "}
                         Register
                     </button>
                 </form>

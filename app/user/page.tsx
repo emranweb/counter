@@ -4,6 +4,7 @@ import React from "react";
 import { connection } from "../database/dbconnect";
 import { RowDataPacket } from "mysql2";
 import { userInfo } from "os";
+import ButtonGroup from "../components/features/ButtonGroup";
 
 interface User extends RowDataPacket {
     user_id: number;
@@ -62,7 +63,9 @@ async function Page() {
                         <p>AL Emran</p>
                         <p>Dhaka Bangladesh</p>
                     </div>
-                    <div></div>
+                    <div>
+                        <ButtonGroup />
+                    </div>
                 </div>
             </div>
         </div>
