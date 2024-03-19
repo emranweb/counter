@@ -5,6 +5,9 @@ import { connection } from "../database/dbconnect";
 import { RowDataPacket } from "mysql2";
 import { userInfo } from "os";
 import ButtonGroup from "../components/features/ButtonGroup";
+import { convertToClientDateTime } from "../utils/utils";
+import ClientComponent from "../components/features/ClientComponent";
+import RequestCoffee from "../components/ui/RequestCoffee";
 
 interface User extends RowDataPacket {
     user_id: number;
@@ -41,8 +44,8 @@ async function Page() {
     const session = await getServerSession();
 
     if (!session) {
-        redirect("/user/signin");
         return null;
+        redirect("/user/signin");
     }
     let userInfo = null;
     if (session && session.user?.email) {
@@ -59,12 +62,45 @@ async function Page() {
         <div className="py-20">
             <div className="container mx-auto">
                 <div className="flex">
-                    <div className="">
+                    <div className="w-full">
                         <p>AL Emran</p>
                         <p>Dhaka Bangladesh</p>
                     </div>
-                    <div>
+                    <div className="w-full">
                         <ButtonGroup />
+                        <ClientComponent>
+                            <RequestCoffee />
+                        </ClientComponent>
+                    </div>
+                </div>
+                <div className="mt-10">
+                    <div className="overflow-x-auto">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Count</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {userCoffee?.map((item: UserCoffee) => {
+                                    return (
+                                        <tr key={item.coffee_id}>
+                                            <td>{item.coffee_id}</td>
+                                            <td>{item.count}</td>
+                                            <td>
+                                                {convertToClientDateTime(
+                                                    item.datetime
+                                                )}
+                                            </td>
+                                            <td>Completed</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

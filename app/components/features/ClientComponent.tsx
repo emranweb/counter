@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 type ClientComponentProps = {
@@ -6,10 +7,11 @@ type ClientComponentProps = {
 
 const ClientComponent = ({ children }: ClientComponentProps) => {
     const isServer = typeof window === "undefined";
+
     if (isServer) {
         return null;
     }
-    return { children };
+    return <>{children}</>;
 };
 
 export default ClientComponent;
