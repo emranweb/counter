@@ -17,17 +17,18 @@ interface User extends RowDataPacket {
 }
 
 interface UserCoffee extends RowDataPacket {
+    user_id: number;
     coffee_id: number;
     count: number;
-    user_id: number;
     coffee_type: string;
-    datetime: string;
+    request_status: string;
+    request_time: string;
 }
 
 async function userInfoCoffee(id: number) {
     const [results] = await connection.query<UserCoffee[]>(
-        "SELECT * FROM coffees WHERE user_id = ?",
-        [id]
+        "SELECT c.user_id as user_id, c.coffee_id as coffee_id, c.count as count, c.coffee_type as coffee_type, r.status as reqest_status, r.request_time as request_time FROM coffees as c LEFT JOIN request_coffees as r ON c.user_id=r.user_id WHERE c.user_id=? = r.user_id=? ORDER BY c.coffee_id DESC;",
+        [id, id]
     );
     return results;
 }
@@ -83,24 +84,29 @@ async function Page() {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>User Id</th>
+                                    <th>Coffee Id</th>
                                     <th>Count</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
+                                    <th>Coffee Type</th>
+                                    <th>Request status</th>
+                                    <th>Reqeust Time</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {userCoffee?.map((item: UserCoffee) => {
                                     return (
-                                        <tr key={item.coffee_id}>
+                                        <tr key={item.user_id}>
+                                            <td>{item.user_id}</td>
                                             <td>{item.coffee_id}</td>
                                             <td>{item.count}</td>
+
+                                            <td>{item.coffee_type}</td>
+                                            <td>{item.reqest_status}</td>
                                             <td>
                                                 {convertToClientDateTime(
-                                                    item.datetime
+                                                    item.request_time
                                                 )}
                                             </td>
-                                            <td>Completed</td>
                                         </tr>
                                     );
                                 })}
