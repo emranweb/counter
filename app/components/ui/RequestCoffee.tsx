@@ -1,9 +1,23 @@
 "use client";
+import { toMySqlFormat } from "@/app/utils/utils";
 import React from "react";
 
-const RequestCoffee = () => {
+type RquestCoffeeProps = {
+    id: number;
+};
+
+const RequestCoffee = (props: RquestCoffeeProps) => {
     const handleCoffeeRequest = () => {
-        console.log("Requesting a coffee");
+        fetch("/api/coffee/request", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: props.id,
+                delivery_time: toMySqlFormat(new Date()),
+            }),
+        });
     };
     return (
         <button onClick={handleCoffeeRequest} className="btn btn-primary">

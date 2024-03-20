@@ -13,5 +13,6 @@ export async function POST(request, response) {
         [user_id, delivery_time]
     );
     revalidatePath("/", "page");
+
     return Response.json(results);
 }

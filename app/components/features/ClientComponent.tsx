@@ -6,11 +6,6 @@ type ClientComponentProps = {
 };
 
 const ClientComponent = ({ children }: ClientComponentProps) => {
-    const isServer = typeof window === "undefined";
-
-    if (isServer) {
-        return null;
-    }
     return <>{children}</>;
 };
 

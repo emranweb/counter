@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { connection } from "../database/dbconnect";
 import { RowDataPacket } from "mysql2";
-import { userInfo } from "os";
 import ButtonGroup from "../components/features/ButtonGroup";
 import { convertToClientDateTime } from "../utils/utils";
 import ClientComponent from "../components/features/ClientComponent";
 import RequestCoffee from "../components/ui/RequestCoffee";
+export const revalidate = 0;
 
 interface User extends RowDataPacket {
     user_id: number;
@@ -44,7 +44,6 @@ async function Page() {
     const session = await getServerSession();
 
     if (!session) {
-        return null;
         redirect("/user/signin");
     }
     let userInfo = null;
@@ -69,7 +68,13 @@ async function Page() {
                     <div className="w-full">
                         <ButtonGroup />
                         <ClientComponent>
-                            <RequestCoffee />
+                            <RequestCoffee
+                                id={
+                                    userInfo && userInfo[0]
+                                        ? userInfo[0].user_id
+                                        : 1
+                                }
+                            />
                         </ClientComponent>
                     </div>
                 </div>
