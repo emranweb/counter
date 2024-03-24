@@ -55,7 +55,7 @@ async function getCoffeeHistory() {
     return results;
 }
 
-export async function Page() {
+async function Page() {
     const [{ today }] = await getTodayData();
     const [{ month }] = await getMonthData();
     const [{ year }] = await getYearData();
