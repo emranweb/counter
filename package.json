@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@types/bcrypt": "^5.0.2",
+        "@types/react-datepicker": "^6.2.0",
         "bcrypt": "^5.1.1",
         "daisyui": "^4.6.0",
         "mysql2": "^3.8.0",

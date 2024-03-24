@@ -1,48 +1,79 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
+import React from "react";
 import CoffeeCountCard from "./components/ui/CoffeeCountCard";
+import { connection } from "./database/dbconnect";
+import { RowDataPacket } from "mysql2";
 import { convertToClientDateTime } from "./utils/utils";
+import ClientComponent from "./components/features/ClientComponent";
+import CoffeeCountCustom from "./components/ui/CoffeeCountCustom";
+// Dynamic Data
+export const revalidate = 0;
+interface TodayCoffeeType extends RowDataPacket {
+    today: number;
+}
 
-export default function Page() {
-    const { data: todayData, error: todayError } = useSWR(
-        "/api/coffee/today",
-        (url) =>
-            fetch(url).then((res) => res.json(), {
-                revalidateOnFocus: false,
-                revalidateOnReconnect: false,
-            })
-    );
-    const { data: coffeeData, error: coffeeHistoryError } = useSWR(
-        "/api/coffee",
-        (url) =>
-            fetch(url).then((res) => res.json(), {
-                revalidateOnFocus: false,
-                revalidateOnReconnect: false,
-            })
-    );
+interface CoffeeMonth extends RowDataPacket {
+    month: number;
+}
 
-    const todayCount = todayData ? todayData[0].today : 0;
-    const coffeeHistory = coffeeData ? coffeeData : [];
+interface CoffeeYear extends RowDataPacket {
+    year: number;
+}
+
+interface CoffeeHistoryType extends RowDataPacket {
+    coffee_id: number;
+    count: number;
+    coffee_type: string;
+    datetime: string;
+    request_id: number;
+}
+
+async function getTodayData() {
+    const [results] = await connection.query<TodayCoffeeType[]>(
+        "SELECT COUNT(*) as today FROM coffees WHERE DATE(datetime) = CURDATE()"
+    );
+    return results;
+}
+
+async function getMonthData() {
+    const [results] = await connection.query<CoffeeMonth[]>(
+        "SELECT COUNT(*) as month FROM coffees WHERE MONTH(datetime) = MONTH(CURDATE())"
+    );
+    return results;
+}
+
+async function getYearData() {
+    const [results] = await connection.query<CoffeeYear[]>(
+        "SELECT COUNT(*) as year FROM coffees WHERE YEAR(datetime) = YEAR(CURDATE())"
+    );
+    return results;
+}
+
+async function getCoffeeHistory() {
+    const [results] = await connection.query<CoffeeHistoryType[]>(
+        "SELECT * FROM coffees ORDER BY coffee_id DESC"
+    );
+    return results;
+}
+
+export async function Page() {
+    const [{ today }] = await getTodayData();
+    const [{ month }] = await getMonthData();
+    const [{ year }] = await getYearData();
+    const coffeeHistory = await getCoffeeHistory();
 
     return (
         <div>
             <div className="container mx-auto my-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                    <CoffeeCountCard
-                        title="Todays Count"
-                        count={todayCount ?? 0}
-                    />
-                    <CoffeeCountCard title="Monthly Count" count={0} />
-                    <CoffeeCountCard title="Yearly Count" count={0} />
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-10">
+                    <CoffeeCountCard title="Todays Count" count={today} />
+                    <CoffeeCountCard title="Monthly Count" count={month} />
 
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold text-gray-700"></h2>
-                        <div className="mt-2">
-                            <span className="text-3xl font-bold">1011</span>
-                        </div>
-                    </div>
+                    <ClientComponent>
+                        <CoffeeCountCustom
+                            title="Select Date"
+                            count={coffeeHistory.length}
+                        />
+                    </ClientComponent>
                 </div>
             </div>
             <div className="container mx-auto my-10">
@@ -134,3 +165,5 @@ export default function Page() {
         </div>
     );
 }
+
+export default Page;
