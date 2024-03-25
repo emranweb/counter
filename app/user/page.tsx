@@ -25,10 +25,23 @@ interface UserCoffee extends RowDataPacket {
     request_time: string;
 }
 
+interface RequestCoffeeProps extends RowDataPacket {
+    request_id: number;
+    status: string;
+}
+
+async function requestCoffesHistory(id: number) {
+    const [results] = await connection.query<RequestCoffeeProps[]>(
+        "SELECT * FROM request_coffees WHERE user_id=?",
+        [id]
+    );
+    return results;
+}
+
 async function userInfoCoffee(id: number) {
     const [results] = await connection.query<UserCoffee[]>(
-        "SELECT c.user_id as user_id, c.coffee_id as coffee_id, c.count as count, c.coffee_type as coffee_type, r.status as reqest_status, r.request_time as request_time FROM coffees as c LEFT JOIN request_coffees as r ON c.user_id=r.user_id WHERE c.user_id=? = r.user_id=? ORDER BY c.coffee_id DESC;",
-        [id, id]
+        "SELECT * FROM coffees WHERE user_id = ?",
+        [id]
     );
     return results;
 }
@@ -53,9 +66,11 @@ async function Page() {
     }
 
     let userCoffee = null;
+    let requestCoffee = null;
 
     if (Array.isArray(userInfo)) {
         userCoffee = await userInfoCoffee(userInfo[0].user_id);
+        requestCoffee = await requestCoffesHistory(userInfo[0].user_id);
     }
 
     return (
@@ -81,37 +96,50 @@ async function Page() {
                 </div>
                 <div className="mt-10">
                     <div className="overflow-x-auto">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th>User Id</th>
-                                    <th>Coffee Id</th>
-                                    <th>Count</th>
-                                    <th>Coffee Type</th>
-                                    <th>Request status</th>
-                                    <th>Reqeust Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {userCoffee?.map((item: UserCoffee) => {
-                                    return (
-                                        <tr key={item.user_id}>
-                                            <td>{item.user_id}</td>
-                                            <td>{item.coffee_id}</td>
-                                            <td>{item.count}</td>
+                        <div className="flex gap-8">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Coffee Id</th>
+                                        <th>Count</th>
+                                        <th>Coffee Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {userCoffee?.map((item: UserCoffee) => {
+                                        return (
+                                            <tr key={item.user_id}>
+                                                <td>{item.coffee_id}</td>
+                                                <td>{item.count}</td>
 
-                                            <td>{item.coffee_type}</td>
-                                            <td>{item.reqest_status}</td>
-                                            <td>
-                                                {convertToClientDateTime(
-                                                    item.request_time
-                                                )}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                                <td>{item.coffee_type}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Request Id</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {requestCoffee?.map(
+                                        (item: RequestCoffeeProps) => {
+                                            return (
+                                                <tr key={item.request_id}>
+                                                    <td>{item.request_id}</td>
+                                                    <td>{item.status}</td>
+                                                </tr>
+                                            );
+                                        }
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

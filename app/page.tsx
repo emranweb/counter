@@ -5,6 +5,7 @@ import { RowDataPacket } from "mysql2";
 import { convertToClientDateTime } from "./utils/utils";
 import ClientComponent from "./components/features/ClientComponent";
 import CoffeeCountCustom from "./components/ui/CoffeeCountCustom";
+import ButtonCoffeeComplete from "./components/ui/ButtonCoffeeComplete";
 // Dynamic Data
 export const revalidate = 0;
 interface TodayCoffeeType extends RowDataPacket {
@@ -15,16 +16,18 @@ interface CoffeeMonth extends RowDataPacket {
     month: number;
 }
 
-interface CoffeeYear extends RowDataPacket {
-    year: number;
-}
-
 interface CoffeeHistoryType extends RowDataPacket {
     coffee_id: number;
     count: number;
     coffee_type: string;
     datetime: string;
     request_id: number;
+}
+
+interface CoffeeRequestType extends RowDataPacket {
+    request_id: number;
+    user_id: number;
+    status: string;
 }
 
 async function getTodayData() {
@@ -41,9 +44,9 @@ async function getMonthData() {
     return results;
 }
 
-async function getYearData() {
-    const [results] = await connection.query<CoffeeYear[]>(
-        "SELECT COUNT(*) as year FROM coffees WHERE YEAR(datetime) = YEAR(CURDATE())"
+async function getRequestCoffess() {
+    const [results] = await connection.query<CoffeeRequestType[]>(
+        "SELECT * FROM request_coffees WHERE status = 'pending'"
     );
     return results;
 }
@@ -58,8 +61,8 @@ async function getCoffeeHistory() {
 async function Page() {
     const [{ today }] = await getTodayData();
     const [{ month }] = await getMonthData();
-    const [{ year }] = await getYearData();
     const coffeeHistory = await getCoffeeHistory();
+    const requestCoffees = await getRequestCoffess();
 
     return (
         <div>
@@ -160,6 +163,37 @@ async function Page() {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>User ID</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {requestCoffees &&
+                                requestCoffees.map((item) => {
+                                    return (
+                                        <tr key={item.request_id}>
+                                            <td>{item.request_id}</td>
+                                            <td>{item.user_id}</td>
+                                            <td>{item.status}</td>
+                                            <td>
+                                                {
+                                                    <ClientComponent>
+                                                        <ButtonCoffeeComplete />
+                                                    </ClientComponent>
+                                                }
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

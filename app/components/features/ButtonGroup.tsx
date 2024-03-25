@@ -5,11 +5,6 @@ const ButtonGroup = () => {
     return (
         <div className="flex gap-4">
             <div className="">
-                <Link href="/user/signin">
-                    <button className="btn btn-primary">SignIn</button>
-                </Link>
-            </div>
-            <div className="">
                 <Link href="/user/signout">
                     <button className="btn btn-primary">Sign Out</button>
                 </Link>
