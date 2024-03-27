@@ -22,6 +22,7 @@ const ButtonCoffeeComplete = (props: ButtonCoffeeCompleteProps) => {
         });
         if (response.ok) {
             router.refresh();
+            new Notification("Coffee Completed");
         }
     };
     return (
