@@ -32,7 +32,7 @@ interface RequestCoffeeProps extends RowDataPacket {
 
 async function requestCoffesHistory(id: number) {
     const [results] = await connection.query<RequestCoffeeProps[]>(
-        "SELECT * FROM request_coffees WHERE user_id=?",
+        "SELECT * FROM request_coffees WHERE user_id=? AND status='pending'",
         [id]
     );
     return results;
@@ -96,7 +96,7 @@ async function Page() {
                 </div>
                 <div className="mt-10">
                     <div className="overflow-x-auto">
-                        <div className="flex gap-8">
+                        <div className="flex items-start gap-8">
                             <table className="table">
                                 <thead>
                                     <tr>

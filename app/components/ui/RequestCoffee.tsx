@@ -1,5 +1,6 @@
 "use client";
 import { toMySqlFormat } from "@/app/utils/utils";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type RquestCoffeeProps = {
@@ -7,8 +8,9 @@ type RquestCoffeeProps = {
 };
 
 const RequestCoffee = (props: RquestCoffeeProps) => {
-    const handleCoffeeRequest = () => {
-        fetch("/api/coffee/request", {
+    const router = useRouter();
+    const handleCoffeeRequest = async () => {
+        const response = await fetch("/api/coffee/request", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -18,6 +20,10 @@ const RequestCoffee = (props: RquestCoffeeProps) => {
                 delivery_time: toMySqlFormat(new Date()),
             }),
         });
+
+        if (response.ok) {
+            router.refresh();
+        }
     };
     return (
         <button onClick={handleCoffeeRequest} className="btn btn-primary">

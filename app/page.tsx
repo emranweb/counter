@@ -152,8 +152,9 @@ async function Page() {
                                                         scope="col"
                                                         className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                                                     >
-                                                        {item.request_id ??
-                                                            "No"}
+                                                        {item.request_id
+                                                            ? "Yes"
+                                                            : "No"}
                                                     </th>
                                                 </tr>
                                             );
@@ -185,7 +186,14 @@ async function Page() {
                                             <td>
                                                 {
                                                     <ClientComponent>
-                                                        <ButtonCoffeeComplete />
+                                                        <ButtonCoffeeComplete
+                                                            userId={
+                                                                item.user_id
+                                                            }
+                                                            requestId={
+                                                                item.request_id
+                                                            }
+                                                        />
                                                     </ClientComponent>
                                                 }
                                             </td>
