@@ -40,7 +40,7 @@ async function requestCoffesHistory(id: number) {
 
 async function userInfoCoffee(id: number) {
     const [results] = await connection.query<UserCoffee[]>(
-        "SELECT * FROM coffees WHERE user_id = ?",
+        "SELECT * FROM coffees WHERE user_id = ? ORDER BY coffee_id DESC LIMIT 10",
         [id]
     );
     return results;
@@ -82,7 +82,6 @@ async function Page() {
                         <p>Dhaka Bangladesh</p>
                     </div>
                     <div className="w-full">
-                        <ButtonGroup />
                         <ClientComponent>
                             <RequestCoffee
                                 id={

@@ -6,6 +6,7 @@ import { convertToClientDateTime } from "./utils/utils";
 import ClientComponent from "./components/features/ClientComponent";
 import CoffeeCountCustom from "./components/ui/CoffeeCountCustom";
 import ButtonCoffeeComplete from "./components/ui/ButtonCoffeeComplete";
+import { getServerSession } from "next-auth";
 // Dynamic Data
 export const revalidate = 0;
 interface TodayCoffeeType extends RowDataPacket {
@@ -32,28 +33,28 @@ interface CoffeeRequestType extends RowDataPacket {
 
 async function getTodayData() {
     const [results] = await connection.query<TodayCoffeeType[]>(
-        "SELECT COUNT(*) as today FROM coffees WHERE DATE(datetime) = CURDATE()"
+        "SELECT SUM(count) as today FROM coffees WHERE DATE(datetime) = CURDATE() ORDER BY coffee_id"
     );
     return results;
 }
 
 async function getMonthData() {
     const [results] = await connection.query<CoffeeMonth[]>(
-        "SELECT COUNT(*) as month FROM coffees WHERE MONTH(datetime) = MONTH(CURDATE())"
+        "SELECT SUM(count) as month FROM coffees WHERE MONTH(datetime) = MONTH(CURDATE()) ORDER BY coffee_id"
     );
     return results;
 }
 
 async function getRequestCoffess() {
     const [results] = await connection.query<CoffeeRequestType[]>(
-        "SELECT * FROM request_coffees WHERE status = 'pending'"
+        "SELECT * FROM request_coffees WHERE status = 'pending' LIMIT 10"
     );
     return results;
 }
 
 async function getCoffeeHistory() {
     const [results] = await connection.query<CoffeeHistoryType[]>(
-        "SELECT * FROM coffees ORDER BY coffee_id DESC"
+        "SELECT * FROM coffees ORDER BY coffee_id DESC LIMIT 10"
     );
     return results;
 }
@@ -63,6 +64,7 @@ async function Page() {
     const [{ month }] = await getMonthData();
     const coffeeHistory = await getCoffeeHistory();
     const requestCoffees = await getRequestCoffess();
+    const session = await getServerSession();
 
     return (
         <div>
@@ -119,46 +121,47 @@ async function Page() {
                                                 Is Request
                                             </th>
                                         </tr>
-                                        {coffeeHistory.map((item) => {
-                                            return (
-                                                <tr key={item.coffee_id}>
-                                                    <th
-                                                        scope="col"
-                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                    >
-                                                        {item.coffee_id}
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                    >
-                                                        {item.coffee_type}
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                    >
-                                                        {item.count}
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                    >
-                                                        {convertToClientDateTime(
-                                                            item.datetime
-                                                        )}
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-                                                    >
-                                                        {item.request_id
-                                                            ? "Yes"
-                                                            : "No"}
-                                                    </th>
-                                                </tr>
-                                            );
-                                        })}
+                                        {coffeeHistory &&
+                                            coffeeHistory.map((item) => {
+                                                return (
+                                                    <tr key={item.coffee_id}>
+                                                        <th
+                                                            scope="col"
+                                                            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                        >
+                                                            {item.coffee_id}
+                                                        </th>
+                                                        <th
+                                                            scope="col"
+                                                            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                        >
+                                                            {item.coffee_type}
+                                                        </th>
+                                                        <th
+                                                            scope="col"
+                                                            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                        >
+                                                            {item.count}
+                                                        </th>
+                                                        <th
+                                                            scope="col"
+                                                            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                        >
+                                                            {convertToClientDateTime(
+                                                                item.datetime
+                                                            )}
+                                                        </th>
+                                                        <th
+                                                            scope="col"
+                                                            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                                                        >
+                                                            {item.request_id
+                                                                ? "Yes"
+                                                                : "No"}
+                                                        </th>
+                                                    </tr>
+                                                );
+                                            })}
                                     </thead>
                                 </table>
                             </div>
